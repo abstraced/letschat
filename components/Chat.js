@@ -1,4 +1,4 @@
-import  { Component } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, ImageBackground, Text, TextInput, Alert, TouchableOpacity, Button, View } from 'react-native';
 
 export default class Chat extends Component {
@@ -21,7 +21,7 @@ export default class Chat extends Component {
     style={[styles.container, 
         {backgroundColor: this.props.navigation.state.params.color}] }>
       
-      <Text style={{color: '#FFFFFF'}}>This is your chat screen</Text>
+      <Text style={{color: '#FFFFFF', fontSize:24}}>Welcome to the chat</Text>
     </View>
   );
 }

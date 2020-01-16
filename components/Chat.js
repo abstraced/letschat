@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {Platform  } from 'react-native';
 import { StyleSheet, View,ScrollView } from 'react-native';
 
-import { GiftedChat } from 'react-native-gifted-chat';
+
+import { GiftedChat,Bubble } from 'react-native-gifted-chat';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
@@ -40,6 +41,7 @@ export default class Chat extends Component {
     })
   }
 
+  // ON SEND FUNCTION 
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
@@ -47,7 +49,7 @@ export default class Chat extends Component {
   }
 
 
-
+// CHANGE COLOR OF THE BUBBLE
   renderBubble(props) {
     return (
       <Bubble
@@ -63,7 +65,7 @@ export default class Chat extends Component {
 
 
 
-  //this will put the users name in navigation bar
+  //Username in the navigation bar
 
   static navigationOptions = ({ navigation }) =>{
     return {
@@ -80,25 +82,26 @@ export default class Chat extends Component {
   return (
    
     <View style={[styles.container, {backgroundColor: this.props.navigation.state.params.color}]}>
+   
+   
     <GiftedChat
      renderBubble={this.renderBubble.bind(this)}
     messages={this.state.messages}
     onSend={messages => this.onSend(messages)}
     user={{
       _id: 1,
-    }}
-  />
-  
+     }} />
+
+  {/* KEYSPACER FOR ANDROID DEVICE */}
   {Platform.OS === 'android' ? <KeyboardSpacer /> : null }
+
   </View>
-  
- 
-  
-
-
   );
 }
 }
+
+
+
 
 const styles = StyleSheet.create({
   container: {

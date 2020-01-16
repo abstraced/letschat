@@ -10,6 +10,9 @@ import {
   TouchableOpacity
 } from "react-native";
 
+
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 export const BackgroundImage = require("../assets/backgroundimage.png");
 
 const color1 = "#090C08";
@@ -37,14 +40,16 @@ export default class Start extends Component {
           <View style={styles.content}>
             {/* Select username */}
             <View style={styles.view_content1}>
+           
               <TextInput
                 style={styles.input}
                 placeholder="    Your name"
                 placeholderTextColor="black"
                 onChangeText={username => this.setState({ username })}
               />
+             
             </View>
-
+            
             {/* SELECT BACKGROUND COLOR */}
             <View style={styles.view_content2}>
               <View>

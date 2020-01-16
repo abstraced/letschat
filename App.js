@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {Platform  } from 'react-native';
 
 
 // import the screens
 import Start from './components/Start';
 import Chat from './components/Chat';
 
+// input/keyboard fix
+import KeyboardSpacer from 'react-native-keyboard-spacer'
 
 // import react Navigation
 import { createAppContainer } from 'react-navigation';

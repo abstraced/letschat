@@ -3,11 +3,30 @@ import {Platform  } from 'react-native';
 import { StyleSheet, View,ScrollView } from 'react-native';
 
 
+//import firebase
+import firebase from '../firebase';
+
+
 import { GiftedChat,Bubble } from 'react-native-gifted-chat';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 export default class Chat extends Component {
+
+
+
+  constructor() {
+    super();
+     this.state = {
+      messages: [],
+       
+     };
+     // INITIALIZE CONNECTION WITH firestone / name of the collection to look for
+     this.referenceMessages = firebase.firestore().collection('messages');
+     
+    
+   }
+
 
   state = {
     messages: []

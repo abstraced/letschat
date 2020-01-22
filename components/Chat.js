@@ -1,53 +1,80 @@
 import React, { Component } from "react";
 import { Platform } from "react-native";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text,Button,AsyncStorage  } from "react-native";
+
 
 console.disableYellowBox = true;
 
 //import firebase
 import firebase from "../firebase";
 
-import { GiftedChat, Bubble } from "react-native-gifted-chat";
+import NetInfo from "@react-native-community/netinfo";
 
+import { GiftedChat, Bubble,InputToolbar } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 
+
+
 export default class Chat extends Component {
+
   constructor() {
+
     super();
-    this.state = {
+     this.state = {
+
+      isConnected: false,
       messages: [],
+      loadingText: "please wait...",
+      
       user: {
         _id: "",
         username: "",
-        avatar: ""
-      },
-      loadingText: "please wait..."
+        avatar: "",
+              }
     };
-    // INITIALIZE CONNECTION WITH firestone / name of the collection to look for
   }
 
+
   componentDidMount() {
-    // Firestore Authentication
 
-    this.authUnsubscribe = firebase.auth().onAuthStateChanged(async user => {
-      if (!user) {
-        await firebase.auth().signInAnonymously();
+  // check if online via NetInfo
+  const unsubscribe = NetInfo.addEventListener(state => {
+
+
+
+      if (state.isConnected) {
+        console.log('online');
+
+        //firebase authentication
+        this.authUnsubscribe = firebase.auth().onAuthStateChanged(async user => {
+            if (!user) {
+              await firebase.auth().signInAnonymously();
+            }
+            //update user state with currently active user data
+            this.setState({
+              isConnected:true,
+              user: {
+                _id: user.uid,
+                username: this.props.navigation.state.params.username,
+                avatar: ""
+              },
+              loadingText: "Connected"
+            });
+      
+            // create a reference to the active user's documents (messages) and start listening
+            this.referenceMessages = firebase.firestore().collection("messages");
+            this.unsubscribeMessages = this.referenceMessages.onSnapshot(this.onCollectionUpdate
+            );
+          });
+
+      } else {
+        console.log('offline');
+        this.getMessages();
+        this.setState({
+        isConnected: false,
+        loadingText:'You are offline' });
+
       }
-      //update user state with currently active user data
-      this.setState({
-        user: {
-          _id: user.uid,
-          username: this.props.navigation.state.params.username,
-          avatar: ""
-        },
-        loadingText: "Connected"
-      });
-
-      // create a reference to the active user's documents (messages) and start listening
-      this.referenceMessages = firebase.firestore().collection("messages");
-      this.unsubscribeMessages = this.referenceMessages.onSnapshot(
-        this.onCollectionUpdate
-      );
     });
   }
 
@@ -56,6 +83,8 @@ export default class Chat extends Component {
     this.unsubscribeMessages();
     this.authUnsubscribe();
   }
+
+// FIREBASE RELATED
 
   // handle changes of data:
   onCollectionUpdate = querySnapshot => {
@@ -70,24 +99,14 @@ export default class Chat extends Component {
       });
     });
 
-    //  sort the array so it's in the chronological order
+  //sort the array so it's in the chronological order
     messages.sort((a, b) => b.createdAt - a.createdAt);
     this.setState({
       messages
     });
   };
-
-  // ON SEND FUNCTION
-  onSend(messages = []) {
-    this.setState(
-      previousState => ({
-        messages: GiftedChat.append(previousState.messages, messages)
-      }),
-      () => {
-        this.addMessage();
-      }
-    );
-  }
+ 
+   
 
   /// add the message to the firestore
   addMessage() {
@@ -100,27 +119,101 @@ export default class Chat extends Component {
     });
   }
 
-  // CHANGE COLOR OF THE BUBBLE
-  renderBubble(props) {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          right: {
-            backgroundColor: "#000"
-          }
-        }}
+
+///OFFLINE AND ASYNCSTRORAGE
+//fetch message from localstorage (if offline)
+ getMessages = async()=> {
+  let messages = '';
+  try {
+    messages = await AsyncStorage.getItem('messages') || [];
+    this.setState({
+      messages: JSON.parse(messages)
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+ deleteMessages = async() => {
+  try {
+    await AsyncStorage.removeItem('messages');
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+saveMessages = async () => {
+  try {
+    await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+///GIFT Functionality
+
+// CHANGE COLOR OF THE BUBBLE
+renderBubble(props) {
+  return (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        right: {
+          backgroundColor: "#000"
+        }
+      }}
+    />
+  );
+}
+
+
+// Hide INPUT if user disconnected
+renderInputToolbar(props) {
+  if (this.state.isConnected == false) {
+  } else {
+    return(
+      <InputToolbar
+      {...props}
       />
     );
   }
+}
 
-  //Username in the navigation bar
+// ON SEND FUNCTION: ADD to firebase and save to asyncstorage
+onSend(messages = []) {
+  this.setState(
+    previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages)
+    }),
+    () => {
+      this.addMessage();
+      this.saveMessages();
+    }
+  );
+}
+
+////Username in the navigation bar
 
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.state.params.username
     };
   };
+
+
+  testAsync = async  ()=>{
+    monTest = await AsyncStorage.getItem('messages');
+    console.log(monTest);
+
+
+
+
+  }
+
 
   render() {
     return (
@@ -131,10 +224,19 @@ export default class Chat extends Component {
         ]}
       >
         <Text> {this.state.loadingText}</Text>
-
+         <Button 
+         title="test"
+         accessibilityLabel="test"
+         onPress={() =>{
+              
+              this.testAsync();
+            }
+            } />
         <GiftedChat
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
+          
+          renderInputToolbar={this.renderInputToolbar.bind(this)}
           onSend={messages => this.onSend(messages)}
           user={this.state.user}
         />
@@ -145,6 +247,11 @@ export default class Chat extends Component {
     );
   }
 }
+
+
+
+//STYLES STYLES STYLES STYLES STYLES STYLES STYLES STYLES STYLES STYLES 
+
 
 const styles = StyleSheet.create({
   container: {

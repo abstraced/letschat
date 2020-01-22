@@ -12,6 +12,8 @@ const navigator = createStackNavigator({
   Chat: { screen: Chat }
 });
 
+
+
 const navigatorContainer = createAppContainer(navigator);
 // Export it as the root component
 export default navigatorContainer;

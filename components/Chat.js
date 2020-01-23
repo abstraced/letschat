@@ -205,16 +205,6 @@ onSend(messages = []) {
   };
 
 
-  testAsync = async  ()=>{
-    monTest = await AsyncStorage.getItem('messages');
-    console.log(monTest);
-
-
-
-
-  }
-
-
   render() {
     return (
       <View
@@ -224,14 +214,7 @@ onSend(messages = []) {
         ]}
       >
         <Text> {this.state.loadingText}</Text>
-         <Button 
-         title="test"
-         accessibilityLabel="test"
-         onPress={() =>{
-              
-              this.testAsync();
-            }
-            } />
+        
         <GiftedChat
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}

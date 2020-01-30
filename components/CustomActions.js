@@ -9,124 +9,99 @@ import {
 } from 'react-native'
 
 const firebase = require('firebase');
-// import firebase from "../firebase";
-// import firebase from "./firebase";
-
 
 console.disableYellowBox = true;
 
 
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-// import * as Location from 'expo-location';
 
-// import firebase from "./firebase";
-// import MapView from 'react-native-maps';
+import * as Location from 'expo-location';
+
+
 
 
 
 export default class CustomActions extends React.Component {
 
 
-  // https://github.com/tdnicola/React-Native-Chat-App/blob/45eab3ed36c59f91638b9edbaf3ad4f23f10e078/components/CustomActions.js
+/// Upload picture to firebase
+  uploadPicture = async (imageToUploadUri) => {
 
-  
-//   // uploading image to the cloud
-//   uploadImage = async (uri) => {
-//     const blob = await new Promise((resolve, reject) => {
-//         const xhr = new XMLHttpRequest();
-//         xhr.onload = (() => {
-//             resolve(xhr.response);
-//         });
-//         xhr.onerror = ((e) => {
-//             console.log(e);
-//             reject(new TypeError('NETWORK REQUEST FAILED'));
-//         });
-//         xhr.responseType = 'blob';
-//         xhr.open('GET', uri, true);
-//         xhr.send(null);
-//     });
-
-//     const getImageName = uri.split('/')
-//     const imageArrayLength = getImageName.length - 1
-    
-//     const ref = firebase.storage().ref().child(getImageName[imageArrayLength]);
-//     console.log(ref, getImageName[imageArrayLength])
-//     const snapshot = await ref.put(blob);
-
-//     blob.close();
-
-//   //spitting out image url
-//     const imageURL = await snapshot.ref.getDownloadURL()
-//     return imageURL
-// }
-
-      
-        
-//       }
-  
-//     }
-//   }
+    var ref = firebase.storage().ref().child(this.props.messageIdGenerator());
+    const response = await fetch(imageToUploadUri);
+    const blob = await response.blob();
+    const snapshot = await ref.put(blob);
 
 
-uploadPicture = async(imageToUploadUri) => {
+    const firebaseLink = await snapshot.ref.getDownloadURL();
 
-  var ref = firebase.storage().ref().child(this.props.messageIdGenerator());
-  const response = await fetch(imageToUploadUri);
-  const blob = await response.blob();
-  const snapshot = await ref.put(blob);
+    return firebaseLink;
+  }
 
 
- const firebaseLink = await snapshot.ref.getDownloadURL();
-
-  return firebaseLink;
-}
-
-pickImage = async () => {
+// pick a picture from the library
+  pickImage = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  
-    if(status === 'granted') {
+
+    if (status === 'granted') {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'Images',
       }).catch(error => console.log(error));
-  
+
       if (!result.cancelled) {
         try {
-        
-         var imageLink =  await this.uploadPicture (result.uri);
-         this.props.onSend({ image: imageLink});
-        
-      } catch(err) {
+
+          var imageLink = await this.uploadPicture(result.uri);
+          this.props.onSend({ image: imageLink });
+
+        } catch (err) {
           console.log(err)
+        }
+
       }
-   
-      }
-  
+
     }
-}
-
-takePicture = async () => {
-  const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL,Permissions.CAMERA);
-
-  if(status === 'granted') {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: 'Images',
-    }).catch(error => console.log(error));
-
-    if (!result.cancelled) {
-      try {
-      
-       var imageLink =  await this.uploadPicture (result.uri);
-       this.props.onSend({ image: imageLink});
-      
-    } catch(err) {
-        console.log(err)
-    }
-     }
-
   }
-}
 
+  // take a picture with the camera 
+
+  takePicture = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
+
+    if (status === 'granted') {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: 'Images',
+      }).catch(error => console.log(error));
+
+      if (!result.cancelled) {
+        try {
+
+          var imageLink = await this.uploadPicture(result.uri);
+          this.props.onSend({ image: imageLink });
+
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+    }
+  }
+
+// get location
+
+  getLocation = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+    if (status === 'granted') {
+      let result = await Location.getCurrentPositionAsync({});
+      console.log(status);
+      if (result) {
+        this.props.onSend({ location: result.coords });
+        console.log(result);
+      }
+    }
+  }
 
 
 
@@ -155,6 +130,7 @@ takePicture = async () => {
             console.log('user wants to take a photo');
             return
           case 2:
+            this.getLocation();
             console.log('user wants to get their location');
           default:
         }
@@ -162,7 +138,7 @@ takePicture = async () => {
     )
   }
 
-  
+
 
 
 
@@ -213,11 +189,11 @@ const styles = StyleSheet.create({
 
 CustomActions.contextTypes = {
   actionSheet: PropTypes.func,
-  
+
 }
 
 CustomActions.defaultProps = {
-  onSend: () => {},
+  onSend: () => { },
   options: {},
   renderIcon: null,
   containerStyle: {},

@@ -3,6 +3,9 @@ const firebase = require('firebase');
 require('firebase/firestore');
 
 
+
+
+
 const config = {
   apiKey: "AIzaSyDjLus34AI6VbrpX_C6EYsIg-jIyAJ7Quk",
   authDomain: "let-s-chat-6cdaf.firebaseapp.com",

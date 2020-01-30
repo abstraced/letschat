@@ -4,14 +4,18 @@ import { StyleSheet, View, Text,Button,AsyncStorage  } from "react-native";
 
 
 console.disableYellowBox = true;
+console.ignoredYellowBox = ['Setting a timer'];
 
 //import firebase
-import firebase from "../firebase";
+import firebase from "./firebase";
 
 import NetInfo from "@react-native-community/netinfo";
 
 import { GiftedChat, Bubble,InputToolbar } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
+
+
+import CustomActions from './CustomActions';
 
 
 
@@ -63,8 +67,7 @@ export default class Chat extends Component {
       
             // create a reference to the active user's documents (messages) and start listening
             this.referenceMessages = firebase.firestore().collection("messages");
-            this.unsubscribeMessages = this.referenceMessages.onSnapshot(this.onCollectionUpdate
-            );
+            this.unsubscribeMessages = this.referenceMessages.onSnapshot(this.onCollectionUpdate);
           });
 
       } else {
@@ -82,11 +85,12 @@ export default class Chat extends Component {
     // stop listening to data changes:
     this.unsubscribeMessages();
     this.authUnsubscribe();
+ 
   }
 
 // FIREBASE RELATED
 
-  // handle changes of data:
+  // handle changes of data and pass them to the state from the store:
   onCollectionUpdate = querySnapshot => {
     const messages = [];
     querySnapshot.forEach(doc => {
@@ -95,7 +99,8 @@ export default class Chat extends Component {
         _id: data._id,
         text: data.text,
         createdAt: data.createdAt.toDate(),
-        user: data.user
+        user: data.user,
+        image:data.image || null
       });
     });
 
@@ -113,9 +118,10 @@ export default class Chat extends Component {
     const message = this.state.messages[0];
     this.referenceMessages.add({
       _id: message._id,
-      text: message.text,
+      text: message.text  || '',
       createdAt: message.createdAt,
-      user: message.user
+      user: message.user,
+      image: message.image || null
     });
   }
 
@@ -155,6 +161,11 @@ saveMessages = async () => {
 
 
 ///GIFT Functionality
+
+//Custom action (sennd picture, take picture, geolocalization)
+renderCustomActions = (props) => {
+  return <CustomActions {...props} />;
+};
 
 // CHANGE COLOR OF THE BUBBLE
 renderBubble(props) {
@@ -218,7 +229,7 @@ onSend(messages = []) {
         <GiftedChat
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
-          
+          renderActions={this.renderCustomActions}
           renderInputToolbar={this.renderInputToolbar.bind(this)}
           onSend={messages => this.onSend(messages)}
           user={this.state.user}

@@ -56,6 +56,7 @@ export default class Chat extends Component {
             await firebase.auth().signInAnonymously();
           }
           //update user state with currently active user data
+          
           this.setState({
             isConnected: true,
             user: {
@@ -92,20 +93,25 @@ export default class Chat extends Component {
 
   // FIREBASE RELATED
 
-  // handle changes of data and pass them to the state from the store:
+    // handle changes of data and pass them to the state from the store:
   onCollectionUpdate = querySnapshot => {
     const messages = [];
     querySnapshot.forEach(doc => {
       var data = doc.data();
+      data.createdAt = data.createdAt.toDate();
       messages.push({
-        _id: data._id,
-        text: data.text,
-        createdAt: data.createdAt.toDate(),
-        user: data.user,
-        image: data.image || null,
-        location: data.location || null
-      });
+        _id,
+        text = '',
+        createdAt,
+        user,
+        image= null,
+        location= null
+      }=data);
     });
+
+
+
+
 
     //sort the array so it's in the chronological order
     messages.sort((a, b) => b.createdAt - a.createdAt);
@@ -114,21 +120,19 @@ export default class Chat extends Component {
     });
   };
 
-
-
-  /// add the message to the firestore
-  addMessage() {
-    const message = this.state.messages[0];
-    this.referenceMessages.add({
-      _id: message._id,
-      text: message.text || '',
-      createdAt: message.createdAt,
-      user: message.user,
-      image: message.image || null,
-      location: message.location || null
-    });
-  }
-
+ 
+///   add the message to the firestore
+addMessage() {
+  const message = this.state.messages[0];
+  this.referenceMessages.add({
+    _id,
+    text = '',
+    createdAt,
+    user,
+    image= null,
+    location= null
+  }= message);
+}
 
   ///OFFLINE AND ASYNCSTRORAGE
   //fetch message from localstorage (if offline)

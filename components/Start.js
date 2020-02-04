@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+
+
+
 import {
   StyleSheet,
   Text,
@@ -9,8 +12,13 @@ import {
   TouchableOpacity
 } from "react-native";
 
+
+
 // KEYBOARD SPACER
 import KeyboardSpacer from "react-native-keyboard-spacer";
+
+
+
 
 export const BackgroundImage = require("../assets/backgroundimage.png");
 

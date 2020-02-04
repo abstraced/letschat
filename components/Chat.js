@@ -73,11 +73,11 @@ export default class Chat extends Component {
         });
 
       } else {
-        console.log('offline');
+        console.log(`offline`);
         this.getMessages();
         this.setState({
           isConnected: false,
-          loadingText: 'You are offline'
+          loadingText: `You are offline`
         });
 
       }
@@ -101,7 +101,7 @@ export default class Chat extends Component {
       data.createdAt = data.createdAt.toDate();
       messages.push({
         _id,
-        text = '',
+        text = ``,
         createdAt,
         user,
         image= null,

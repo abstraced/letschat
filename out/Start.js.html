@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Start.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Start.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
 * @class Start
 * @requires React
 * @requires React-Native
@@ -47,17 +75,17 @@ export default class Start extends Component {
 
   render() {
     return (
-      <ImageBackground source={BackgroundImage} style={styles.background}>
-        <View style={styles.all}>
-          <View style={styles.title}>
-            <Text style={styles.title_text}> Let's chat</Text>
-          </View>
+      &lt;ImageBackground source={BackgroundImage} style={styles.background}>
+        &lt;View style={styles.all}>
+          &lt;View style={styles.title}>
+            &lt;Text style={styles.title_text}> Let's chat&lt;/Text>
+          &lt;/View>
 
           {/* USER INTERFACE */}
-          <View style={styles.content}>
+          &lt;View style={styles.content}>
             {/* Select username */}
-            <View style={styles.view_content1}>
-              <TextInput
+            &lt;View style={styles.view_content1}>
+              &lt;TextInput
                 accessible={true}
                 accessibilityLabel="Name input"
                 accessibilityHint="Lets you choose your username"
@@ -66,15 +94,15 @@ export default class Start extends Component {
                 placeholderTextColor="black"
                 onChangeText={username => this.setState({ username })}
               />
-            </View>
+            &lt;/View>
 
             {/* SELECT BACKGROUND COLOR */}
-            <View style={styles.view_content2}>
-              <View>
-                <Text>Choose your backdground color </Text>
-              </View>
-              <View style={styles.colorChoice}>
-                <TouchableOpacity
+            &lt;View style={styles.view_content2}>
+              &lt;View>
+                &lt;Text>Choose your backdground color &lt;/Text>
+              &lt;/View>
+              &lt;View style={styles.colorChoice}>
+                &lt;TouchableOpacity
                   accessible={true}
                   accessibilityLabel="Color background"
                   accessibilityHint="Lets you choose the background color of the chat"
@@ -82,7 +110,7 @@ export default class Start extends Component {
                   onPress={() => this.setState({ color: color1 })}
                   style={[styles.colorButton, { backgroundColor: color1 }]}
                 />
-                <TouchableOpacity
+                &lt;TouchableOpacity
                   accessible={true}
                   accessibilityLabel="Color background"
                   accessibilityHint="Lets you choose the background color of the chat"
@@ -90,7 +118,7 @@ export default class Start extends Component {
                   onPress={() => this.setState({ color: color2 })}
                   style={[styles.colorButton, { backgroundColor: color2 }]}
                 />
-                <TouchableOpacity
+                &lt;TouchableOpacity
                   accessible={true}
                   accessibilityLabel="Color background"
                   accessibilityHint="Lets you choose the background color of the chat"
@@ -98,7 +126,7 @@ export default class Start extends Component {
                   onPress={() => this.setState({ color: color3 })}
                   style={[styles.colorButton, { backgroundColor: color3 }]}
                 />
-                <TouchableOpacity
+                &lt;TouchableOpacity
                   accessible={true}
                   accessibilityLabel="Color background"
                   accessibilityHint="Lets you choose the background color of the chat"
@@ -106,12 +134,12 @@ export default class Start extends Component {
                   onPress={() => this.setState({ color: color4 })}
                   style={[styles.colorButton, { backgroundColor: color4 }]}
                 />
-              </View>
-            </View>
+              &lt;/View>
+            &lt;/View>
 
             {/* GO TO THE CHAT */}
-            <View style={styles.view_content3}>
-              <Button
+            &lt;View style={styles.view_content3}>
+              &lt;Button
                 accessible={true}
                 accessibilityLabel="Go to the chat"
                 accessibilityHint="Lets you go to the chatroom"
@@ -126,11 +154,11 @@ export default class Start extends Component {
                 }
                 title="Start Chatting"
               />
-            </View>
-          </View>
-        </View>
-        <KeyboardSpacer />
-      </ImageBackground>
+            &lt;/View>
+          &lt;/View>
+        &lt;/View>
+        &lt;KeyboardSpacer />
+      &lt;/ImageBackground>
     );
   }
 }
@@ -191,3 +219,26 @@ const styles = StyleSheet.create({
     borderRadius: 25
   }
 });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Chat.html">Chat</a></li><li><a href="Start.html">Start</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Feb 10 2020 19:19:30 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

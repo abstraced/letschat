@@ -10,22 +10,22 @@ It's a React-Native chat app for iOs and Android devices, working offline as wel
 
 ## How to install and use it
 To be able to access and use the services for the development and setup of this app, the following accounts need to be set up.
-* [Expo] - building native iOS and Android apps using JavaScript and React Native
+ 
 
-Install Expo globally:
+* Install Expo globally
 ```npm install -g expo-cli```
-Install expo dependencies:
+* Install expo dependencies:
 ```expo install expo-permissions```
 ```expo install expo-image-picker```
 ```expo install expo-location```
 ```expo install react-native-maps```
 
-Install the dependencies from the folder root:
+* Install the dependencies from the folder root:
 ```npm install ```
 expo install react-navigation react-native-gesture-handler react-native-reanimated react-native-screens
 
 
-Once everything is installed run 
+* Once everything is installed run 
 ```expo start```
 
 

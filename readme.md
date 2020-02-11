@@ -45,6 +45,10 @@ The following npm packages are required, the versions are mentioned for compatib
 
 
 ## Dependencies
+| ghhgh |   |
+|-------|---|
+
+
 
 | Name | Version|
 | @react-native-community/netinfo | ^4.6.0 | 

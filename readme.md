@@ -46,7 +46,7 @@ The following npm packages are required, the versions are mentioned for compatib
 
 ## Dependencies
 
-| Name | Version| 
+| Name | Version|
 | @react-native-community/netinfo| ^4.6.0| 
 |     expo | ~36.0.0| 
  |    firebase| ^7.7.0| 

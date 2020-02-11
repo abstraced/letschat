@@ -45,19 +45,14 @@ The following npm packages are required, the versions are mentioned for compatib
 
 
 ## Dependencies
-| ghhgh |   |
+| Name | Version  |
 |-------|---|
-
-
-
-| Name | Version|
-| @react-native-community/netinfo | ^4.6.0 | 
-| expo | ~36.0.0 | 
-| firebase| ^7.7.0| 
-|    react| ~16.9.0| 
-|    react-dom| ~16.9.0| 
-|    react-native| https|//github.com/expo/react-native/archive/sdk-36.0.0.tar.gz| 
-|    react-native-gesture-handler| ~1.5.0| 
+|@react-native-community/netinfo|^4.6.0|
+|expo|~36.0.0|
+|firebase|^7.7.0|
+|react|~16.9.0|
+|react-dom|~16.9.0|
+| react-native|36.0.0 ||    react-native-gesture-handler| ~1.5.0| 
 |    react-native-gifted-chat| ^0.13.0| 
 |   react-native-keyboard-spacer| ^0.4.1| 
 |   react-native-safe-area-context| ^0.6.0| 
@@ -71,6 +66,7 @@ The following npm packages are required, the versions are mentioned for compatib
 |    expo-image-picker| ~8.0.1| 
 |    expo-location| ~8.0.0| 
 |    react-native-maps| 0.26.1| 
+
 
 
 
